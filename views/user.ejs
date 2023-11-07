@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>عرض البروفايل</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      text-align: center;
+    }
+
+    .profile-container {
+      width: 400px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border: 1px solid #ccc;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    p {
+      color: #666;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="profile-container">
+    <h1>Welcome to the profile page</h1>
+    <p>user-profile: <strong>
+        <%= user.username %>
+      </strong></p>
+
+    <p>phone-nember: <%= user.phone %> </p>
+
+
+    <!-- يمكنك إضافة المزيد من المعلومات هنا -->
+  </div>
+</body>
+
+</html>
