@@ -34,7 +34,14 @@ const con = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'websocket'
+    database: 'db_1'
+});
+
+const con_2 = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'db_2'
 });
 
 
@@ -95,19 +102,61 @@ app.post("/login", (req, res) => {
 })
 
 
+
+
 app.get("/users", (req, res) => {
-    const excludedUserId = req.query.excludedUserId;
+    
+    let resultList_1 = [];
+    
 
-    con.connect(function (err) {
-        if (err) throw err;
-        console.log("Connected!");
+    const queryPromise = new Promise((resolve, reject) => {
+        
+        con.query('SELECT * FROM users WHERE id = 1', (queryErr, results) => {
+            if (queryErr) {
+                reject(queryErr);
+                return;
+            }
 
-        const query = "SELECT * FROM users WHERE id <> ?";
-        con.query(query, [excludedUserId], function (error, results, fields) {
-            if (error) throw error;
+            
+            resultList_1 = results.map(result => {
+                return {
+                    id: result.id,
+                    email: result.email,
+                    password: result.password
+                    
+                };
+            });
 
-
-            res.status(200).json(results);
+            
+            resolve(resultList_1);
         });
+
+
+        
     });
+
+  
+    con_2.query('SELECT * FROM users WHERE id = 1', (err, results) => {
+        if (err) throw err;
+           
+        queryPromise.then(resultList => {
+
+            const mergedArray = resultList.concat(results);
+
+            res.status(200).json(mergedArray);
+
+
+        }).catch(error => {
+            console.error('حدث خطأ:', error);
+            
+
+        });
+        
+       
+        
+    });
+
+    
+    
+
 });
